@@ -1,6 +1,7 @@
 <?php // callback.php
+session_start();
 require "vendor/autoload.php";
-require_once('vendor/linecorp/line-bot-sdk/line-bot-sdk-tiny/LINEBotTiny.php');	
+require_once('vendor/linecorp/line-bot-sdk/line-bot-sdk-tiny/LINEBotTiny.php');
 $access_token = 'CzCg21Q+yFnjiWTWWHAins8ZCKSL7H3tlg4X60vYbqGoEAA0MGOiWKB3sWWH2jA6hxQxCcyiG4cAcQkZSSxkv/hkoA47Xvu3LoXSe4Ug3l9k/KefwC4wEFf5UUOKlQgYkjruHJTD4NE98fAlpwJGjAdB04t89/1O/w1cDnyilFU=';
 
 // Get POST body content
@@ -16,8 +17,9 @@ if (!is_null($events['events'])) {
 			// Get text sent
 			$text = $event['source']['userId'];
 			$text1 = $event['message']['text'];
-			echo $text;
-			echo $text1;
+			$_SESSION["text"] = $text;
+			$_SESSION["text1"] = $text1;
+
 			// Get replyToken
 			$replyToken = $event['replyToken'];
 
@@ -45,8 +47,10 @@ if (!is_null($events['events'])) {
 			$result = curl_exec($ch);
 			curl_close($ch);
 
-			echo $result . "\r\n";	
+			echo $result . "\r\n";
 		}
 	}
 }
+echo $_SESSION["text"];
+echo $_SESSION["text1"];
 echo "OK";
