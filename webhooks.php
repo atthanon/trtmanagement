@@ -1,6 +1,7 @@
 <?php // callback.php
 include('server.php');
 require "vendor/autoload.php";
+session_start();
 require_once('vendor/linecorp/line-bot-sdk/line-bot-sdk-tiny/LINEBotTiny.php');	
 
 $access_token = 'CzCg21Q+yFnjiWTWWHAins8ZCKSL7H3tlg4X60vYbqGoEAA0MGOiWKB3sWWH2jA6hxQxCcyiG4cAcQkZSSxkv/hkoA47Xvu3LoXSe4Ug3l9k/KefwC4wEFf5UUOKlQgYkjruHJTD4NE98fAlpwJGjAdB04t89/1O/w1cDnyilFU=';
@@ -16,7 +17,9 @@ if (!is_null($events['events'])) {
 	foreach ($events['events'] as $event) {
 		// Reply only when message sent is in 'text' format
 		if ($event['type'] == 'message' && $event['message']['type'] == 'text') {
-			echo $event['message'];
+			
+			$_SESSION["event"] = $event['message'];
+			
 			// Get text sent
 			$text = $event['source']['userId'];
 			// Get replyToken
@@ -52,3 +55,4 @@ if (!is_null($events['events'])) {
 	}
 }
 echo "OK";
+echo $_SESSION["event"];
