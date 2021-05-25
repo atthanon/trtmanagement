@@ -1,63 +1,30 @@
 <?php // callback.php
-include('server.php');
 require "vendor/autoload.php";
-require_once('vendor/linecorp/line-bot-sdk/line-bot-sdk-tiny/LINEBotTiny.php');
-
+require_once('vendor/linecorp/line-bot-sdk/line-bot-sdk-tiny/LINEBotTiny.php');	
 $access_token = 'CzCg21Q+yFnjiWTWWHAins8ZCKSL7H3tlg4X60vYbqGoEAA0MGOiWKB3sWWH2jA6hxQxCcyiG4cAcQkZSSxkv/hkoA47Xvu3LoXSe4Ug3l9k/KefwC4wEFf5UUOKlQgYkjruHJTD4NE98fAlpwJGjAdB04t89/1O/w1cDnyilFU=';
 
 // Get POST body content
 $content = file_get_contents('php://input');
 // Parse JSON
 $events = json_decode($content, true);
-//$link = mysqli_connect("http://student.crru.ac.th/managedb/", "601413040", "atthanon@3040", "601413040");
 // Validate parsed JSON data
 if (!is_null($events['events'])) {
 	// Loop through each event
 	foreach ($events['events'] as $event) {
 		// Reply only when message sent is in 'text' format
 		if ($event['type'] == 'message' && $event['message']['type'] == 'text') {
-
 			// Get text sent
 			$text = $event['source']['userId'];
-			$text_res = $event['message']['text'];
+			$text1 = $event['message']['text'];
 			echo $text;
-			echo $text_res;
+			echo $text1;
 			// Get replyToken
 			$replyToken = $event['replyToken'];
-			$messages = [
-				'type' => 'text',
-				'text' => "test1"
-			];
 
-			// Make a POST Request to Messaging API to reply to sender
-			$url = 'https://api.line.me/v2/bot/message/reply';
-			$data = [
-				'replyToken' => $replyToken,
-				'messages' => [$messages],
-			];
-			$post = json_encode($data);
-			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
-
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			$result = curl_exec($ch);
-			curl_close($ch);
-
-			// echo $result . "\r\n";
-			// $update_carandroad = $db->prepare("UPDATE users SET line_id=:id_line  WHERE id_number=:number_id");
-			// $update_carandroad->bindParam(':id_line', $text);
-			// $update_carandroad->bindParam(':number_id', $text_res);
-			// if ($update_carandroad->execute()) {
-				
-			// }
 			// Build message to reply back
 			$messages = [
 				'type' => 'text',
-				'text' => "test1"
+				'text' => $text
 			];
 
 			// Make a POST Request to Messaging API to reply to sender
@@ -78,7 +45,7 @@ if (!is_null($events['events'])) {
 			$result = curl_exec($ch);
 			curl_close($ch);
 
-			echo $result . "\r\n";
+			echo $result . "\r\n";	
 		}
 	}
 }
