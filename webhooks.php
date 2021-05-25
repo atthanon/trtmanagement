@@ -29,7 +29,7 @@ if (!is_null($events['events'])) {
 			// Get text sent
 			$text = $event['source']['userId'];
 			$text1 = $event['message']['text'];
-			$sql = "UPDATE users SET line_id = $text where id_number = $text1";
+			$sql = "UPDATE users SET line_id = '$text' where id_number = '$text1'";
 
 			if ($conn->query($sql) === TRUE) {
 				echo "Record updated successfully";
