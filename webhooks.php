@@ -1,5 +1,6 @@
 <?php // callback.php
 session_start();
+include('server.php');
 require "vendor/autoload.php";
 require_once('vendor/linecorp/line-bot-sdk/line-bot-sdk-tiny/LINEBotTiny.php');
 $access_token = 'CzCg21Q+yFnjiWTWWHAins8ZCKSL7H3tlg4X60vYbqGoEAA0MGOiWKB3sWWH2jA6hxQxCcyiG4cAcQkZSSxkv/hkoA47Xvu3LoXSe4Ug3l9k/KefwC4wEFf5UUOKlQgYkjruHJTD4NE98fAlpwJGjAdB04t89/1O/w1cDnyilFU=';
@@ -17,16 +18,17 @@ if (!is_null($events['events'])) {
 			// Get text sent
 			$text = $event['source']['userId'];
 			$text1 = $event['message']['text'];
-			$_SESSION["text"] = $text;
-			$_SESSION["text1"] = $text1;
-
+			$update_meter = $db->prepare("UPDATE users SET line_id = :id_line where id_number = :number_id");
+			$update_carandroad->bindParam(':id_line', $text);
+			$update_carandroad->bindParam(':number_id', $text1);
+			$update_meter->execute();
 			// Get replyToken
 			$replyToken = $event['replyToken'];
 
 			// Build message to reply back
 			$messages = [
 				'type' => 'text',
-				'text' => $text1
+				'text' => "ขอบคุณที่ใช้บริการ"
 			];
 
 			// Make a POST Request to Messaging API to reply to sender
