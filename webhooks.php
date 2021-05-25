@@ -4,6 +4,18 @@ include('server.php');
 require "vendor/autoload.php";
 require_once('vendor/linecorp/line-bot-sdk/line-bot-sdk-tiny/LINEBotTiny.php');
 $access_token = 'CzCg21Q+yFnjiWTWWHAins8ZCKSL7H3tlg4X60vYbqGoEAA0MGOiWKB3sWWH2jA6hxQxCcyiG4cAcQkZSSxkv/hkoA47Xvu3LoXSe4Ug3l9k/KefwC4wEFf5UUOKlQgYkjruHJTD4NE98fAlpwJGjAdB04t89/1O/w1cDnyilFU=';
+$servername = "student.crru.ac.th";
+$username = "601413040";
+$password = "atthanon@3040";
+$dbname = "601413040";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+	die("Connection failed: " . $conn->connect_error);
+}
+
 
 // Get POST body content
 $content = file_get_contents('php://input');
@@ -18,10 +30,15 @@ if (!is_null($events['events'])) {
 			// Get text sent
 			$text = $event['source']['userId'];
 			$text1 = $event['message']['text'];
-			$update_meter = $db->prepare("UPDATE users SET line_id = :id_line where id_number = :number_id");
-			$update_meter->bindParam(':id_line', $text);
-			$update_meter->bindParam(':number_id', $text1);
-			$update_meter->execute();
+			$sql = "UPDATE users SET line_id = $text where id_number = $text1";
+
+			if ($conn->query($sql) === TRUE) {
+				echo "Record updated successfully";
+			} else {
+				echo "Error updating record: " . $conn->error;
+			}
+
+			$conn->close();
 			// Get replyToken
 			$replyToken = $event['replyToken'];
 
