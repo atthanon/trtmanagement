@@ -19,8 +19,8 @@ if (!is_null($events['events'])) {
 			$text = $event['source']['userId'];
 			$text1 = $event['message']['text'];
 			$update_meter = $db->prepare("UPDATE users SET line_id = :id_line where id_number = :number_id");
-			$update_carandroad->bindParam(':id_line', $text);
-			$update_carandroad->bindParam(':number_id', $text1);
+			$update_meter->bindParam(':id_line', $text);
+			$update_meter->bindParam(':number_id', $text1);
 			$update_meter->execute();
 			// Get replyToken
 			$replyToken = $event['replyToken'];
