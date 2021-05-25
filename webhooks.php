@@ -10,12 +10,11 @@ $password = "atthanon@3040";
 $dbname = "601413040";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 // Check connection
-if ($conn->connect_error) {
-	die("Connection failed: " . $conn->connect_error);
+if (!$conn) {
+	die("Connection failed: " . mysqli_connect_error());
 }
-
 
 // Get POST body content
 $content = file_get_contents('php://input');
@@ -38,7 +37,7 @@ if (!is_null($events['events'])) {
 				echo "Error updating record: " . $conn->error;
 			}
 
-			$conn->close();
+			
 			// Get replyToken
 			$replyToken = $event['replyToken'];
 
