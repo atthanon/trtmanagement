@@ -9,7 +9,7 @@ $access_token = 'CzCg21Q+yFnjiWTWWHAins8ZCKSL7H3tlg4X60vYbqGoEAA0MGOiWKB3sWWH2jA
 $content = file_get_contents('php://input');
 // Parse JSON
 $events = json_decode($content, true);
-$link = mysqli_connect("http://student.crru.ac.th/managedb/", "601413040", "atthanon@3040", "601413040");
+//$link = mysqli_connect("http://student.crru.ac.th/managedb/", "601413040", "atthanon@3040", "601413040");
 // Validate parsed JSON data
 if (!is_null($events['events'])) {
 	// Loop through each event
