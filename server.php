@@ -15,7 +15,7 @@ if (!$conn) {
 } else {
 }
 
-$db_host = "http://student.crru.ac.th/managedb/";
+$db_host = "student.crru.ac.th";
 $db_user = "601413040";
 $db_password = "atthanon@3040";
 $db_name = "601413040";
