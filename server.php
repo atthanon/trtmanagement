@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set("Asia/Bangkok");
 
-$servername = "http://student.crru.ac.th/managedb/";
+$servername = "student.crru.ac.th";
 $username = "601413040";
 $password = "atthanon@3040";
 $dbname = "601413040";
