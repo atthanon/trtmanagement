@@ -1,7 +1,6 @@
 <?php // callback.php
 include('server.php');
 require "vendor/autoload.php";
-session_start();
 require_once('vendor/linecorp/line-bot-sdk/line-bot-sdk-tiny/LINEBotTiny.php');	
 
 $access_token = 'CzCg21Q+yFnjiWTWWHAins8ZCKSL7H3tlg4X60vYbqGoEAA0MGOiWKB3sWWH2jA6hxQxCcyiG4cAcQkZSSxkv/hkoA47Xvu3LoXSe4Ug3l9k/KefwC4wEFf5UUOKlQgYkjruHJTD4NE98fAlpwJGjAdB04t89/1O/w1cDnyilFU=';
@@ -18,41 +17,45 @@ if (!is_null($events['events'])) {
 		// Reply only when message sent is in 'text' format
 		if ($event['type'] == 'message' && $event['message']['type'] == 'text') {
 			
-			$_SESSION["event"] = $event['message'];
-			
 			// Get text sent
 			$text = $event['source']['userId'];
+			$text_res = $event['message']['text'];
 			// Get replyToken
 			$replyToken = $event['replyToken'];
-			$sql = "INSERT INTO employees (id, username, housenumber, id_number, phonnumber) 
-			VALUES ('$id','$username','$housenumber','$id_number','$phonnumber')";
-			// Build message to reply back
-			$messages = [
-				'type' => 'text',
-				'text' => $text
-			];
-
-			// Make a POST Request to Messaging API to reply to sender
-			$url = 'https://api.line.me/v2/bot/message/reply';
-			$data = [
-				'replyToken' => $replyToken,
-				'messages' => [$messages],
-			];
-			$post = json_encode($data);
-			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
-
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			$result = curl_exec($ch);
-			curl_close($ch);
-
-			echo $result . "\r\n";	
+			if (!isset($caraneroaderrorMsg)) {
+				$update_carandroad = $db->prepare("UPDATE users SET line_id=:id_line  WHERE id_number=:number_id");
+				$update_carandroad->bindParam(':id_line', $text);
+				$update_carandroad->bindParam(':number_id', $text_res);
+				if ($update_carandroad->execute()) {
+					$messages = [
+						'type' => 'text',
+						'text' => "test1"
+					];
+		
+					// Make a POST Request to Messaging API to reply to sender
+					$url = 'https://api.line.me/v2/bot/message/reply';
+					$data = [
+						'replyToken' => $replyToken,
+						'messages' => [$messages],
+					];
+					$post = json_encode($data);
+					$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
+		
+					$ch = curl_init($url);
+					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+					curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+					curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+					$result = curl_exec($ch);
+					curl_close($ch);
+		
+					echo $result . "\r\n";	
+				}
+			  }
+			
+			
 		}
 	}
 }
 echo "OK";
-echo $_SESSION["event"];
